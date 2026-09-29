@@ -9,7 +9,6 @@ gmbar2 = face_recognition.load_image_file("./training/musk2.jpg")
 located = face_recognition.face_locations(gmbar)
 koor = face_recognition.face_landmarks(gmbar)
 
-
 ## encoding
 encod_left = face_recognition.face_encodings(gmbar)[0]
 encod_right = face_recognition.face_encodings(gmbar2)[0]
