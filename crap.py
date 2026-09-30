@@ -15,18 +15,20 @@ encod_right = face_recognition.face_encodings(gmbar2)[0]
 
 hasil = face_recognition.compare_faces([encod_left], encod_right)
 
-if not kamera.isOpened():
-    print("Eyoo kamera rusak")
+print(located)
 
-while True:
-    ret, frame = kamera.read()
-    greyshi = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    lokasi_muka = face_recognition.face_locations(greyshi)
-    for atas, kanan, bawah, kiri in lokasi_muka:
-        cv2.rectangle(frame, (kiri, atas), (kanan, bawah), (255,0,0), 2)
+# if not kamera.isOpened():
+#     print("Eyoo kamera rusak")
 
-    cv2.imshow("Ngaca!", frame)
+# while True:
+#     ret, frame = kamera.read()
+#     greyshi = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#     lokasi_muka = face_recognition.face_locations(greyshi)
+#     for atas, kanan, bawah, kiri in lokasi_muka:
+#         cv2.rectangle(frame, (kiri, atas), (kanan, bawah), (255,0,0), 2)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+#     cv2.imshow("Ngaca!", frame)
+
+#     if cv2.waitKey(1) & 0xFF == ord('q'):
+#         break
 

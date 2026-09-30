@@ -40,8 +40,7 @@ while True:
         pass
     else:
         realtime = face_recognition.face_encodings(grey, track)
-        # nilai = face_recognition.face_distance()
-
+        
         for (atas, kanan, bawah, kiri), posisi in zip(track, realtime):
             compare = face_recognition.compare_faces(encoded, posisi)
             if True in compare:
