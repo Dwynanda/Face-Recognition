@@ -1,22 +1,26 @@
 import cv2
 import face_recognition
 import numpy as np
+import os
+import pickle
 
 kamera = cv2.VideoCapture(0)
+list_name = []
 
 while True:
-    nama = input("Insert your'e name : ")
-    if nama == "Yuda":
-        sourcy = face_recognition.load_image_file("./training/yoeda.jpg")
-        break
-    elif nama == "Musk":
-        sourcy = face_recognition.load_image_file("./training/musk.jpg")
+    nama = input("Masukkan nama : ")
+
+    for person in os.listdir("person_name"):
+        list_name.append(os.path.splitext(person)[0])
+
+    if nama in list_name:
+        with open(f"./encoded_data/{nama}.pkl", "rb") as file:
+            encoded = pickle.load(file)
         break
     else:
         print("Try Again!")
 
-lokasi_img = cv2.cvtColor(sourcy, cv2.COLOR_BGR2RGB)
-source = face_recognition.face_encodings(lokasi_img)[0]
+source = encoded[0]
 
 while True:
     detik, frame = kamera.read()
@@ -30,7 +34,7 @@ while True:
         pass
     else:
         realtime = face_recognition.face_encodings(ubah)[0]
-        hasil_encode = face_recognition.compare_faces([realtime], source)
+        hasil_encode = face_recognition.compare_faces([source], realtime)
         if hasil_encode == np.True_:
             print("Berhasil!")
             
