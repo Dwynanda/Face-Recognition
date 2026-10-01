@@ -1,7 +1,8 @@
 import cv2
 import face_recognition
-import mysql.connector
+# import mysql.connector
 from pathlib import Path
+import pickle
 # import json
 
 kamera = cv2.VideoCapture(0)
@@ -28,14 +29,14 @@ while True:
 
     if key == ord('c'):
         cv2.imwrite(path_image, frame)
-        folder = Path("test_encoding")
-        file_loc = folder / f"{nama_file}.txt"
-
+        
     if key == ord('q'):
         source_img = face_recognition.load_image_file(path_image)
         encode_wajah = face_recognition.face_encodings(source_img)
-        ubah_data = ",".join(map(str, encode_wajah))
-        file_loc.write_text(ubah_data, encoding="utf-8")
+        # ubah_data = ",".join(map(str, encode_wajah))
+        # file_loc.write_text(ubah_data, encoding="utf-8")
+        with open(f"./test_encoding/{nama_file}.plk", "wb") as file:
+            pickle.dump(encode_wajah, file)
 
 
         # lokasi_wajah = face_recognition.face_locations(source_img)

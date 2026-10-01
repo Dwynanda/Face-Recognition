@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+import pickle
 import face_recognition
 
 kamera = cv2.VideoCapture(0)
@@ -8,11 +9,19 @@ kamera = cv2.VideoCapture(0)
 encoded = []
 personnamed = []
 
-for namafile in os.listdir("training"):
-    source = face_recognition.load_image_file(f"./training/{namafile}")
-    coloring = cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
-    encode = face_recognition.face_encodings(coloring)[0]
-    encoded.append(encode)
+for namafile in os.listdir("test_encoding"):
+    # source = face_recognition.load_image_file(f"./training/{namafile}")
+    # coloring = cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
+    # encode = face_recognition.face_encodings(coloring)[0]
+    # ubah_data = np.array(map(float, namafile))
+    # with open(f"./test_encoding/{namafile}", "r") as file:
+    #     isi = file.read()
+    #     encode = np.fromstring(isi, sep=",")
+    #     encoded.append(f"./test/{namafile}")
+
+    with open(f"./test_encoding/{namafile}", "rb") as file:
+        encode = pickle.load(file)
+    encoded.append(encode[0])
     personnamed.append(os.path.splitext(namafile)[0])
 
 # sourc1 = face_recognition.load_image_file("./Training/yoeda.jpg")
@@ -54,7 +63,7 @@ while True:
             kanan *= 4
             bawah *= 4
             kiri *= 4
-            cv2.rectangle(frame, (kiri, atas), (kanan, bawah), (0,0,255), 2)
+            cv2.rectangle(frame, (kiri, atas), (kanan, bawah), (255,0,0), 2)
             cv2.putText(frame, named, (kiri, atas - 10), (cv2.FONT_HERSHEY_COMPLEX), 0.5, (0,255,0), 1)
             
 

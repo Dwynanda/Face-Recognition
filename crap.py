@@ -3,6 +3,8 @@ import face_recognition
 
 kamera = cv2.VideoCapture(0)
 
+tampung = []
+
 ## da file
 gmbar = face_recognition.load_image_file("./training/yoeda.jpg")
 gmbar2 = face_recognition.load_image_file("./training/musk2.jpg")
@@ -13,9 +15,15 @@ koor = face_recognition.face_landmarks(gmbar)
 encod_left = face_recognition.face_encodings(gmbar)[0]
 encod_right = face_recognition.face_encodings(gmbar2)[0]
 
+demn = tampung.append(encod_left)
+
 hasil = face_recognition.compare_faces([encod_left], encod_right)
 
-print(located)
+# with open("./test_encoding/anjay.txt", "r")  as file:
+#     anjay = file.read()
+#     print(anjay)
+
+print(encod_left)
 
 # if not kamera.isOpened():
 #     print("Eyoo kamera rusak")
