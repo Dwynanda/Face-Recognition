@@ -38,6 +38,10 @@ while True:
         with open(f"./test_encoding/{nama_file}.plk", "wb") as file:
             pickle.dump(encode_wajah, file)
 
+        with open(f"./person_name/{nama_file}.txt", "w", encoding="utf-8") as file:
+            file.write(nama_file)
+
+        print("Success!")
 
         # lokasi_wajah = face_recognition.face_locations(source_img)
         # jason = json.dumps(encode_wajah[0].tolist())
