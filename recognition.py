@@ -3,6 +3,8 @@ import numpy as np
 import os
 import pickle
 import face_recognition
+import mysql.connector
+
 
 kamera = cv2.VideoCapture(0)
 
@@ -26,7 +28,7 @@ while True:
         pass
     else:
         realtime = face_recognition.face_encodings(grey, track)
-        
+
         for (atas, kanan, bawah, kiri), posisi in zip(track, realtime):
             compare = face_recognition.compare_faces(encoded, posisi)
             if True in compare:
@@ -43,7 +45,7 @@ while True:
             cv2.rectangle(frame, (kiri, atas), (kanan, bawah), (255,0,0), 2)
             cv2.putText(frame, named, (kiri, atas - 10), (cv2.FONT_HERSHEY_COMPLEX), 0.5, (0,255,0), 1)
 
-    cv2.imshow("Test", frame)
+    cv2.imshow("Kamera", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

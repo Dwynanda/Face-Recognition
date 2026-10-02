@@ -3,9 +3,17 @@ import face_recognition
 import numpy as np
 import os
 import pickle
+import mysql.connector
 
 kamera = cv2.VideoCapture(0)
 list_name = []
+
+database = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "",
+    database = "face_recog"
+)
 
 while True:
     nama = input("Masukkan nama : ")
@@ -14,8 +22,9 @@ while True:
         list_name.append(os.path.splitext(person)[0])
 
     if nama in list_name:
-        with open(f"./encoded_data/{nama}.pkl", "rb") as file:
-            encoded = pickle.load(file)
+        # with open(f"./encoded_data/{nama}.pkl", "rb") as file:
+        #     encoded = pickle.load(file)
+        encoded = pickle.loads()
         break
     else:
         print("Try Again!")
