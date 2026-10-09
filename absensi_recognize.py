@@ -6,7 +6,7 @@ import pickle
 import mysql.connector
 
 kamera = cv2.VideoCapture(0)
-list_name = []
+encoded = []
 
 database = mysql.connector.connect(
     host = "localhost",
@@ -14,22 +14,54 @@ database = mysql.connector.connect(
     password = "",
     database = "face_recog"
 )
+cursors = database.cursor()
 
-while True:
-    nama = input("Masukkan nama : ")
+nama = input("Masukkan nama : ")
 
-    for person in os.listdir("person_name"):
-        list_name.append(os.path.splitext(person)[0])
 
-    if nama in list_name:
-        # with open(f"./encoded_data/{nama}.pkl", "rb") as file:
-        #     encoded = pickle.load(file)
-        encoded = pickle.loads()
-        break
-    else:
-        print("Try Again!")
+command = """
+    SELECT name_faces.name, encoding_faces.encoding
+    FROM name_faces
+    JOIN encoding_faces
+    ON name_faces.id = encoding_faces.facesname_id
+    WHERE name_faces.name = %s
+"""
+
+cursors.execute(command, (nama,))
+data = cursors.fetchone()
+
+if data:
+    nama = data[0]
+    ncode = data[1]
+    ubah = pickle.loads(ncode)
+
+    encoded.append(ubah)
+
+else:
+    print("not found!")
+
+
+
+# while True:
+#     nama = input("Masukkan nama : ")
+
+#     for person in os.listdir("person_name"):
+#         list_name.append(os.path.splitext(person)[0])
+
+#     if nama in list_name:
+#         # with open(f"./encoded_data/{nama}.pkl", "rb") as file:
+#         #     encoded = pickle.load(file)
+#         encoded = pickle.loads()
+#         command = "SELECT encoding FROM encoding_image"
+#         hasil = cursors.one()
+        
+#         break
+#     else:
+#         print("Try Again!")
 
 source = encoded[0]
+
+print(source)
 
 while True:
     detik, frame = kamera.read()

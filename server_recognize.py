@@ -1,0 +1,88 @@
+import cv2
+import numpy as np
+import pickle
+import face_recognition
+import mysql.connector
+from fastapi import FastAPI
+
+# kamera = cv2.VideoCapture(0)
+
+encoded = []
+personnamed = []
+
+app = FastAPI()
+
+@app.get("/")
+def home():
+    return{"message":"Server aktif!"}
+
+@app.get("/recognize")
+async def recognize(file: Upload = file(...)):
+    image_data = await file.read()
+    array = np.frombuffer(image_data, dtype=np.uint8)
+    image_fix = cv2.imdecode(array, cv2.IMREAD_COLOR)
+
+
+# database = mysql.connector.connect(
+#     host = "localhost",
+#     user = "root",
+#     password = "",
+#     database = "face_recog"
+# )
+
+# cursors = database.cursor()
+
+# command = """
+#     SELECT name_faces.name, encoding_faces.encoding
+#     FROM name_faces
+#     JOIN encoding_faces
+#     ON name_faces.id = encoding_faces.facesname_id
+# """
+# cursors.execute(command)
+# data = cursors.fetchall()
+
+# for name, ncode in data:
+#     ubah = pickle.loads(ncode)
+
+#     encoded.append(ubah)
+#     personnamed.append(name)
+
+# for namafile in os.listdir("encoded_data"):
+#     with open(f"./encoded_data/{namafile}", "rb") as file:
+#         encode = pickle.load(file)
+
+#     encoded.append(encode[0])
+#     personnamed.append(os.path.splitext(namafile)[0])
+
+while True:
+    frame = image_jadi
+    erat, frame = kamera.read()
+    resize = cv2.resize(frame, (0,0), fx=0.25, fy=0.25)
+    grey = cv2.cvtColor(resize, cv2.COLOR_BGR2RGB)
+    track = face_recognition.face_locations(grey)
+
+    if track == []:
+        pass
+    else:
+        realtime = face_recognition.face_encodings(grey, track)
+
+        for (atas, kanan, bawah, kiri), posisi in zip(track, realtime):
+            compare = face_recognition.compare_faces(encoded, posisi)
+            if True in compare:
+                wajah_true = compare.index(True)
+                nama = personnamed[wajah_true]
+            else:
+                nama = "Unknown"
+
+            named = nama
+            atas *= 4
+            kanan *= 4
+            bawah *= 4
+            kiri *= 4
+            cv2.rectangle(frame, (kiri, atas), (kanan, bawah), (255,0,0), 2)
+            cv2.putText(frame, named, (kiri, atas - 10), (cv2.FONT_HERSHEY_COMPLEX), 0.5, (0,255,0), 1)
+
+    cv2.imshow("Kamera", frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break

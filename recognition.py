@@ -5,18 +5,41 @@ import pickle
 import face_recognition
 import mysql.connector
 
-
 kamera = cv2.VideoCapture(0)
 
 encoded = []
 personnamed = []
 
-for namafile in os.listdir("encoded_data"):
-    with open(f"./encoded_data/{namafile}", "rb") as file:
-        encode = pickle.load(file)
+database = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "",
+    database = "face_recog"
+)
 
-    encoded.append(encode[0])
-    personnamed.append(os.path.splitext(namafile)[0])
+cursors = database.cursor()
+
+command = """
+    SELECT name_faces.name, encoding_faces.encoding
+    FROM name_faces
+    JOIN encoding_faces
+    ON name_faces.id = encoding_faces.facesname_id
+"""
+cursors.execute(command)
+data = cursors.fetchall()
+
+for name, ncode in data:
+    ubah = pickle.loads(ncode)
+
+    encoded.append(ubah)
+    personnamed.append(name)
+
+# for namafile in os.listdir("encoded_data"):
+#     with open(f"./encoded_data/{namafile}", "rb") as file:
+#         encode = pickle.load(file)
+
+#     encoded.append(encode[0])
+#     personnamed.append(os.path.splitext(namafile)[0])
 
 while True:
     erat, frame = kamera.read()

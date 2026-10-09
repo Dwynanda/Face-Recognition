@@ -20,8 +20,6 @@ database = mysql.connector.connect(
 )
 
 cursors = database.cursor()
-command = "INSERT INTO encoding_image(encoding) VALUES (%s)"
-
 
 while True:
     ret, frame = kamera.read()
@@ -41,9 +39,15 @@ while True:
 
         # with open(f"./person_name/{nama_file}.txt", "w", encoding="utf-8") as file:
         #     file.write(nama_file)
+
+        command1 = "INSERT INTO name_faces(name) VALUES (%s)"
+        cursors.execute(command1, (nama_file,))
+        name_id = cursors.lastrowid
+
+        command2 = "INSERT INTO encoding_faces(facesname_id, encoding) VALUES (%s, %s)"
         data_bytes = pickle.dumps(encode_wajah)
-        value = (data_bytes,)
-        cursors.execute(command, value)
+        # value = (data_bytes,)
+        cursors.execute(command2, (name_id, data_bytes))
         database.commit()
 
         print("Success!")
